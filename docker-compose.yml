@@ -20,7 +20,8 @@ services:
       #- ./volumes/article:/opt/otrs/var/article
       - ./volumes/skins:/opt/otrs/var/httpd/htdocs/skins/
       - ./backups:/var/otrs/backups
-      - ./volumes/otrs:/opt/otrs/
+      - ./volumes/addons:/opt/otrs/addons
+      - ./volumes/db_upgrade:/opt/otrs/db_upgrade
       - /etc/localtime:/etc/localtime:ro
   mariadb:
     image: juanluisbaptiste/otrs-mariadb:latest
