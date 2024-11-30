@@ -20,8 +20,7 @@ services:
       #- ./volumes/article:/opt/otrs/var/article
       - ./volumes/skins:/opt/otrs/var/httpd/htdocs/skins/
       - ./backups:/var/otrs/backups
-      - ./volumes/addons:/opt/otrs/addons
-      - ./volumes/db_upgrade:/opt/otrs/db_upgrade
+      - ./volumes/otrs:/opt/otrs/
       - /etc/localtime:/etc/localtime:ro
   mariadb:
     image: juanluisbaptiste/otrs-mariadb:latest
@@ -31,11 +30,3 @@ services:
     volumes:
       - ./volumes/mysql:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
-# If you need a SMTP relay you can use this service
-  # postfix:
-  #   image: juanluisbaptiste/postfix:latest
-  #   expose:
-  #     - '25'
-  #   # See juanluisbaptiste/postfix github page for the contents
-  #   # and an explanation of credentials-smtp.
-  #   env_file: .env

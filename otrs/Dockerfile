@@ -18,21 +18,24 @@ RUN sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/CentOS*
 RUN yum install -y yum-plugin-fastestmirror && \
     yum install -y epel-release && \
     yum -y install https://harbottle.gitlab.io/epmel/7/x86_64/epmel-release.rpm && \
-    yum update -y && \
-    yum -y install bzip2 cronie httpd mysql mod_perl \
+    yum update -y
+RUN yum -y install bzip2 cronie httpd mysql mod_perl perl-CPAN perl-App-cpanminus\
     perl-core "perl(Crypt::SSLeay)" "perl(Net::LDAP)" "perl(URI)" \
     procmail "perl(Date::Format)" "perl(LWP::UserAgent)" \
     "perl(Net::DNS)" "perl(IO::Socket::SSL)" "perl(XML::Parser)" \
-    "perl(Apache2::Reload)" "perl(Crypt::Eksblowfish::Bcrypt)" \
+    "perl(Apache2::Reload)" "perl(Crypt::Eksblowfish::Bcrypt)" "perl(Data::UUID)" "perl(iCal::Parser)"\
     "perl(Encode::HanExtra)" "perl(GD)" "perl(GD::Text)" "perl(GD::Graph)" \
     "perl(JSON::XS)" "perl(Mail::IMAPClient)" "perl(PDF::API2)" "perl(DateTime)" \
     "perl(Text::CSV_XS)" "perl(YAML::XS)" "perl(Text::CSV_XS)" "perl(DBD::mysql)" \
     perl-Moo "perl(namespace::clean)" "perl(Crypt::Random::Source)" "perl(Exporter::Tiny)" \
     "perl(Math::Random::ISAAC)" "perl(Math::Random::Secure)" "perl(Module::Find)" \
-    "perl(Types::TypeTiny)" rsyslog supervisor tar which && \
-    yum install -y https://download.znuny.org/releases/RPMS/rhel/7/znuny-${OTRS_VERSION}.noarch.rpm && \
-    /opt/otrs/bin/otrs.CheckModules.pl && \
-    yum clean all
+    "perl(Types::TypeTiny)" rsyslog supervisor tar which
+RUN yum clean all
+RUN cpanm install --notest JSON Config::Tiny
+RUN cpanm iCal::Parser
+RUN yum install -y https://download.znuny.org/releases/RPMS/rhel/7/znuny-${OTRS_VERSION}.noarch.rpm
+RUN /opt/otrs/bin/otrs.CheckModules.pl
+RUN yum clean all
 # Add scripts and function files
 COPY *.sh /
 #Supervisord configuration
